@@ -14,8 +14,8 @@ import com.example.jwt.vo.CredencialesVO;
 
 @RestController
 public class AutorizacionController {
-	@Autowired
-	AuthenticationManager authenticationManager;
+    @Autowired
+    AuthenticationManager authenticationManager;
 
     @Autowired
     JPADetalleUsuariosService detalleUsuariosService;
@@ -25,8 +25,9 @@ public class AutorizacionController {
 
     @PostMapping("/autenticar")
     public String autenticar(@RequestBody CredencialesVO credenciales) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(credenciales.getUsuario(), credenciales.getContraseña()));
-		final UserDetails detalleUsuario = detalleUsuariosService.loadUserByUsername(credenciales.getUsuario());
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(credenciales.getUsuario(), credenciales.getContraseña()));
+        final UserDetails detalleUsuario = detalleUsuariosService.loadUserByUsername(credenciales.getUsuario());
         return jwtService.generarToken(detalleUsuario.getUsername());
     }
 }

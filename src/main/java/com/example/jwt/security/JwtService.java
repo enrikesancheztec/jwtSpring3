@@ -4,6 +4,8 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +18,8 @@ import javax.crypto.SecretKey;
 
 @Component
 public class JwtService {
-    private String secretoJwt = "c13994aec64de45c03dddf6490eebeb60f3b83c4437aa0611771c88ae12ca8e7";
+    @Value("${jwt.service.key}")
+    private String secretoJwt;
 
     public String generarToken(String nombreUsuario) {
         Map<String, Object> concesiones = new HashMap<>();
@@ -30,7 +33,7 @@ public class JwtService {
                 .compact();
     }
 
-    SecretKey generarLlaveDigital() {
+    private SecretKey generarLlaveDigital() {
         byte[] llave = Decoders.BASE64.decode(secretoJwt);
         return Keys.hmacShaKeyFor(llave);
     }

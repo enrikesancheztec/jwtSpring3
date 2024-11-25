@@ -3,7 +3,6 @@ package com.example.jwt.config;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,17 +19,14 @@ import com.example.jwt.security.JwtFilter;
 
 @Configuration
 public class GestionUsuariosConfig {
-    @Autowired
-    private JwtFilter jwtFilter;
-
     @Bean
     public PasswordEncoder passwordEncoder() throws NoSuchAlgorithmException {
         SecureRandom s = SecureRandom.getInstanceStrong();
         return new BCryptPasswordEncoder(4, s);
-    }
+    }  
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http)
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtFilter jwtFilter)
             throws Exception {
 
         http.httpBasic(Customizer.withDefaults());
